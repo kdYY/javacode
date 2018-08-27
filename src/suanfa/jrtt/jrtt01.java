@@ -1,6 +1,7 @@
 package suanfa.jrtt;
 
 import java.util.HashMap;
+import java.util.Scanner;
 
 /**
  * 为了不断优化推荐效果，今日头条每天要存储和处理海量数据。假设有这样一种场景：我们对用户按照
@@ -10,7 +11,50 @@ import java.util.HashMap;
  */
 public class jrtt01 {
     public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+        int[] scores = new int[10000];
+        int[] boolSleep = new int[10000];
+        int classMin = 0;
+        int keepAlive = 0;
+        int i = 0, max = 0;
+        //记录唤醒的时刻
+        int flag = -1;
 
+        while (in.hasNextInt()) {//注意while处理多个case
+            classMin = in.nextInt();
+            keepAlive = in.nextInt();
+        }
+        while (in.hasNextInt()) {//注意while处理多个case
+            scores[i] = in.nextInt();
+            i++;
+        }
+        i=0;
+        while (in.hasNextInt()) {//注意while处理多个case
+            boolSleep[i] = in.nextInt();
+            i++;
+        }
+
+        for(i=0; i<classMin; i++){
+            int temp = 0;
+            for(int j=0;j<keepAlive;j++){
+                //将keepAlive区间里去掉标识为1的兴趣值，获得唤醒兴趣值
+                if(boolSleep[i+j] == 1){
+                    continue;
+                }
+                temp += scores[i+j];
+            }
+            if(temp > max){
+                flag = i;
+                max = temp;
+            }
+        }
+
+        for(i=0; i<classMin; i++){
+            if(boolSleep[i] == 1){
+                max += scores[i];
+            }
+        }
+        System.out.println(max);
     }
 
 }
